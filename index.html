@@ -14,12 +14,12 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Inter',sans-serif;
+    font-family:Inter,sans-serif;
 }
 
 body{
-    background:#0b0b0b;
-    color:white;
+    background:#0d0d0d;
+    color:#fff;
 }
 
 /* HEADER */
@@ -27,10 +27,10 @@ body{
 header{
     position:sticky;
     top:0;
-    z-index:999;
-    background:#0b0b0b;
-    padding:18px 20px;
-    border-bottom:1px solid #1d1d1d;
+    z-index:100;
+    background:#0d0d0d;
+    border-bottom:1px solid #222;
+    padding:18px;
 }
 
 header h1{
@@ -41,82 +41,93 @@ header h1{
 /* GRID */
 
 .container{
-    padding:18px;
+    padding:16px;
     padding-bottom:95px;
 }
 
 .grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:18px;
+    gap:16px;
 }
 
 /* CARD */
 
 .card{
-    background:#0b0b0b;
+    position:relative;
+    aspect-ratio:9/16;
+    border-radius:18px;
     overflow:hidden;
-    transition:.25s;
-}
-
-.card:hover{
-    transform:translateY(-3px);
+    background:#222;
 }
 
 .card img{
+    position:absolute;
+    inset:0;
     width:100%;
-    height:240px;
+    height:100%;
     object-fit:cover;
-    border-radius:16px;
-    display:block;
 }
 
-/* TEXT */
+/* CONTENT */
+
+.content{
+    position:absolute;
+    left:12px;
+    right:12px;
+    bottom:12px;
+
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
 
 .name{
-    margin-top:12px;
     font-size:18px;
     font-weight:700;
     text-align:left;
+    color:white;
+    text-shadow:0 2px 8px rgba(0,0,0,.9);
 }
 
 .desc{
-    margin-top:6px;
-    color:#9b9b9b;
-    font-size:13px;
-    line-height:1.5;
+    font-size:12px;
+    line-height:1.45;
+    color:white;
     text-align:left;
 
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-line-clamp:2;
     overflow:hidden;
+
+    text-shadow:0 2px 8px rgba(0,0,0,.9);
 }
 
 .chat{
-    margin-top:14px;
-    width:100%;
-    height:42px;
+    margin-top:2px;
+    height:40px;
     border:none;
-    border-radius:12px;
-    background:#2e7cff;
+    border-radius:10px;
+    background:#2979ff;
     color:white;
-    font-weight:600;
     font-size:14px;
-    opacity:.75;
+    font-weight:600;
     pointer-events:none;
+    opacity:.9;
 }
 
-/* BOTTOM NAV */
+/* NAVIGATION */
 
 .bottom{
     position:fixed;
-    bottom:0;
     left:0;
     right:0;
-    height:74px;
-    background:#101010;
-    border-top:1px solid #202020;
+    bottom:0;
+
+    height:72px;
+    background:#111;
+    border-top:1px solid #222;
 
     display:flex;
     justify-content:space-around;
@@ -128,14 +139,14 @@ header h1{
     flex-direction:column;
     align-items:center;
     gap:5px;
-    color:#777;
+    color:#888;
     font-size:12px;
 }
 
 .nav svg{
     width:24px;
     height:24px;
-    fill:#777;
+    fill:#888;
 }
 
 .nav.active{
@@ -146,111 +157,137 @@ header h1{
     fill:white;
 }
 
-button{
-    cursor:not-allowed;
-}
-
 </style>
 </head>
 
 <body>
 
 <header>
-    <h1>N Chatbot</h1>
+<h1>N Chatbot</h1>
 </header>
 
 <div class="container">
 
 <div class="grid">
 
+<!-- CARD 1 -->
+
 <div class="card">
-<img src="https://picsum.photos/400/650?1">
+
+<img src="https://picsum.photos/400/700?1">
+
+<div class="content">
+
 <div class="name">Anime Girl</div>
+
 <div class="desc">
-Karakter yang ramah, ceria, dan siap menemani percakapanmu kapan saja.
-</div>
-<button class="chat">Chat Karakter</button>
+Karakter ramah yang selalu siap menemani percakapanmu.
 </div>
 
+<button class="chat">Chat Karakter</button>
+
+</div>
+
+</div>
+
+<!-- CARD 2 -->
+
 <div class="card">
-<img src="https://picsum.photos/400/650?2">
+
+<img src="https://picsum.photos/400/700?2">
+
+<div class="content">
+
 <div class="name">Cyber AI</div>
+
 <div class="desc">
-Asisten futuristik yang ahli teknologi, coding, dan dunia AI.
-</div>
-<button class="chat">Chat Karakter</button>
+Asisten futuristik yang ahli dalam teknologi dan coding.
 </div>
 
+<button class="chat">Chat Karakter</button>
+
+</div>
+
+</div>
+
+<!-- CARD 3 -->
+
 <div class="card">
-<img src="https://picsum.photos/400/650?3">
+
+<img src="https://picsum.photos/400/700?3">
+
+<div class="content">
+
 <div class="name">Princess</div>
+
 <div class="desc">
-Putri kerajaan yang baik hati dan senang berbincang dengan siapa saja.
-</div>
-<button class="chat">Chat Karakter</button>
+Putri kerajaan yang lembut dan sangat bijaksana.
 </div>
 
+<button class="chat">Chat Karakter</button>
+
+</div>
+
+</div>
+
+<!-- CARD 4 -->
+
 <div class="card">
-<img src="https://picsum.photos/400/650?4">
+
+<img src="https://picsum.photos/400/700?4">
+
+<div class="content">
+
 <div class="name">Knight</div>
+
 <div class="desc">
-Ksatria pemberani yang akan selalu melindungimu.
-</div>
-<button class="chat">Chat Karakter</button>
+Ksatria pemberani yang selalu menjaga kedamaian kerajaan.
 </div>
 
+<button class="chat">Chat Karakter</button>
+
+</div>
+
+</div>
+
+<!-- CARD 5 -->
+
 <div class="card">
-<img src="https://picsum.photos/400/650?5">
+
+<img src="https://picsum.photos/400/700?5">
+
+<div class="content">
+
 <div class="name">Elf</div>
+
 <div class="desc">
-Penjaga hutan dengan kemampuan sihir alam yang luar biasa.
-</div>
-<button class="chat">Chat Karakter</button>
+Penjaga hutan yang memiliki kekuatan sihir alam.
 </div>
 
-<div class="card">
-<img src="https://picsum.photos/400/650?6">
-<div class="name">Detective</div>
-<div class="desc">
-Ahli memecahkan misteri dan kasus yang paling rumit sekalipun.
-</div>
 <button class="chat">Chat Karakter</button>
+
 </div>
 
+</div>
+
+<!-- CARD 6 -->
+
 <div class="card">
-<img src="https://picsum.photos/400/650?7">
+
+<img src="https://picsum.photos/400/700?6">
+
+<div class="content">
+
 <div class="name">Robot</div>
+
 <div class="desc">
 Robot AI generasi terbaru dengan kemampuan analisis tinggi.
 </div>
+
 <button class="chat">Chat Karakter</button>
+
 </div>
 
-<div class="card">
-<img src="https://picsum.photos/400/650?8">
-<div class="name">Maid</div>
-<div class="desc">
-Pelayan yang sopan, perhatian, dan selalu siap membantu.
-</div>
-<button class="chat">Chat Karakter</button>
-</div>
-
-<div class="card">
-<img src="https://picsum.photos/400/650?9">
-<div class="name">Samurai</div>
-<div class="desc">
-Petarung legendaris dengan kehormatan dan disiplin tinggi.
-</div>
-<button class="chat">Chat Karakter</button>
-</div>
-
-<div class="card">
-<img src="https://picsum.photos/400/650?10">
-<div class="name">Vampire</div>
-<div class="desc">
-Makhluk malam yang misterius namun sangat elegan.
-</div>
-<button class="chat">Chat Karakter</button>
 </div>
 
 </div>
@@ -260,24 +297,33 @@ Makhluk malam yang misterius namun sangat elegan.
 <div class="bottom">
 
 <div class="nav active">
+
 <svg viewBox="0 0 24 24">
 <path d="M12 3l9 8h-3v10h-5v-6H11v6H6V11H3z"/>
 </svg>
+
 <span>Home</span>
+
 </div>
 
 <div class="nav">
+
 <svg viewBox="0 0 24 24">
 <path d="M13 3a9 9 0 100 18 9 9 0 000-18zm1 5h-2v6l5 3 1-1.6-4-2.4z"/>
 </svg>
+
 <span>History</span>
+
 </div>
 
 <div class="nav">
+
 <svg viewBox="0 0 24 24">
 <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5z"/>
 </svg>
+
 <span>Account</span>
+
 </div>
 
 </div>
