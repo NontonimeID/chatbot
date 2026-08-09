@@ -1,0 +1,1651 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Arcade</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Fredoka', sans-serif;
+    color: white;
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(circle at 10% 20%, #6c2cff55, transparent 30%),
+        radial-gradient(circle at 90% 10%, #00d9ff44, transparent 30%),
+        radial-gradient(circle at 50% 100%, #ff2ea655, transparent 35%),
+        linear-gradient(135deg, #080b18, #11152d 50%, #080b18);
+}
+
+/* BACKGROUND */
+
+.bg-shape {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: .25;
+    z-index: -1;
+    animation: float 8s infinite ease-in-out;
+}
+
+.shape1 {
+    width: 250px;
+    height: 250px;
+    background: #7b2cff;
+    left: -100px;
+    top: 20%;
+}
+
+.shape2 {
+    width: 300px;
+    height: 300px;
+    background: #00d9ff;
+    right: -120px;
+    bottom: 10%;
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    50% {
+        transform: translateY(-40px) scale(1.1);
+    }
+}
+
+/* HEADER */
+
+header {
+    padding: 35px 20px 20px;
+    text-align: center;
+}
+
+.logo {
+    font-size: clamp(40px, 7vw, 70px);
+    font-weight: 700;
+
+    background: linear-gradient(90deg, #8b5cff, #00e5ff, #ff55c8);
+    -webkit-background-clip: text;
+    color: transparent;
+
+    filter: drop-shadow(0 0 20px #6c35ff66);
+}
+
+.subtitle {
+    color: #aeb5d6;
+    margin-top: 8px;
+}
+
+/* NAV */
+
+.nav {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 10px;
+
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    background: #ffffff0b;
+    border: 1px solid #ffffff15;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+}
+
+.nav button {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 14px;
+    background: transparent;
+    color: #bfc6e8;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.nav button:hover,
+.nav button.active {
+    color: white;
+    background: linear-gradient(135deg, #703cff, #a13cff);
+    box-shadow: 0 0 20px #743cff55;
+}
+
+/* GAME AREA */
+
+.container {
+    width: min(1100px, 94%);
+    margin: auto;
+}
+
+.game {
+    display: none;
+
+    padding: 30px;
+    border-radius: 30px;
+
+    background: #11152bcc;
+    border: 1px solid #ffffff14;
+
+    box-shadow:
+        0 20px 70px #00000055,
+        inset 0 1px #ffffff08;
+
+    backdrop-filter: blur(20px);
+
+    animation: appear .35s ease;
+}
+
+.game.active {
+    display: block;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.game-title {
+    font-size: 32px;
+    margin-bottom: 6px;
+}
+
+.game-desc {
+    color: #969dbd;
+    margin-bottom: 25px;
+}
+
+button.main-btn {
+    border: none;
+    padding: 13px 22px;
+    border-radius: 14px;
+
+    background: linear-gradient(135deg, #713cff, #b03cff);
+    color: white;
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: .2s;
+}
+
+button.main-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px #813cff66;
+}
+
+/* TIC TAC TOE */
+
+.ttt-board {
+    width: min(360px, 90vw);
+    margin: 25px auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.ttt-cell {
+    aspect-ratio: 1;
+    border: 1px solid #ffffff15;
+    border-radius: 18px;
+
+    background: #ffffff08;
+    color: white;
+
+    font-size: 45px;
+    font-family: inherit;
+
+    cursor: pointer;
+    transition: .2s;
+}
+
+.ttt-cell:hover {
+    background: #ffffff15;
+    transform: scale(1.03);
+}
+
+.status {
+    text-align: center;
+    font-size: 20px;
+    color: #c8cdf0;
+    margin: 15px;
+}
+
+/* RPS */
+
+.rps {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 30px 0;
+}
+
+.rps button {
+    width: 110px;
+    height: 110px;
+
+    border: 1px solid #ffffff15;
+    border-radius: 25px;
+
+    background: #ffffff08;
+    color: white;
+
+    font-size: 45px;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.rps button:hover {
+    transform: translateY(-8px) rotate(-3deg);
+    background: #ffffff16;
+}
+
+.rps-result {
+    text-align: center;
+    font-size: 22px;
+    min-height: 70px;
+}
+
+/* GUESS */
+
+.guess-box {
+    max-width: 450px;
+    margin: 30px auto;
+    text-align: center;
+}
+
+.input {
+    width: 100%;
+    padding: 15px;
+
+    border-radius: 15px;
+    border: 1px solid #ffffff15;
+
+    background: #00000030;
+    color: white;
+
+    font-family: inherit;
+    font-size: 18px;
+    outline: none;
+
+    margin-bottom: 12px;
+}
+
+.input:focus {
+    border-color: #874cff;
+    box-shadow: 0 0 20px #874cff33;
+}
+
+/* MEMORY */
+
+.memory {
+    width: min(600px, 100%);
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.card {
+    aspect-ratio: 1;
+    border-radius: 18px;
+
+    background: linear-gradient(135deg, #713cff, #34205f);
+    border: 1px solid #ffffff15;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 35px;
+
+    transform-style: preserve-3d;
+    transition: .35s;
+}
+
+.card.flipped,
+.card.matched {
+    background: #ffffff0d;
+    transform: rotateY(180deg);
+}
+
+.card span {
+    display: none;
+}
+
+.card.flipped span,
+.card.matched span {
+    display: block;
+    transform: rotateY(180deg);
+}
+
+/* CLICKER */
+
+.clicker {
+    text-align: center;
+}
+
+.click-count {
+    font-size: 80px;
+    font-weight: 700;
+    margin: 25px;
+}
+
+.click-button {
+    width: 200px;
+    height: 200px;
+
+    border-radius: 50%;
+    border: 8px solid #ffffff18;
+
+    background: linear-gradient(135deg, #713cff, #ff3cae);
+
+    color: white;
+    font-size: 25px;
+    font-family: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow: 0 0 50px #9b3cff55;
+
+    transition: .08s;
+}
+
+.click-button:active {
+    transform: scale(.92);
+}
+
+/* REACTION */
+
+.reaction-area {
+    max-width: 600px;
+    height: 300px;
+    margin: 20px auto;
+
+    border-radius: 25px;
+
+    background: #ffffff08;
+    border: 1px solid #ffffff12;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    font-size: 25px;
+    color: #aeb5d6;
+}
+
+.reaction-area.waiting {
+    background: #a52c4c;
+}
+
+.reaction-area.ready {
+    background: #1cbd78;
+    color: white;
+}
+
+/* SNAKE */
+
+.snake-wrapper {
+    text-align: center;
+}
+
+#snakeCanvas {
+    width: min(400px, 90vw);
+    height: min(400px, 90vw);
+
+    border-radius: 20px;
+    border: 2px solid #ffffff12;
+
+    background: #05070e;
+}
+
+.score {
+    font-size: 20px;
+    margin: 15px;
+}
+
+/* CONNECT FOUR */
+
+.connect {
+    display: grid;
+    grid-template-columns: repeat(7, 55px);
+    gap: 7px;
+
+    justify-content: center;
+
+    padding: 15px;
+
+    background: #302071;
+    border-radius: 20px;
+
+    max-width: max-content;
+    margin: auto;
+}
+
+.connect-cell {
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+    background: #0c1020;
+
+    cursor: pointer;
+    transition: .2s;
+}
+
+.connect-cell:hover {
+    transform: scale(.9);
+}
+
+.connect-cell.red {
+    background: #ff456b;
+    box-shadow: 0 0 15px #ff456b88;
+}
+
+.connect-cell.yellow {
+    background: #ffd447;
+    box-shadow: 0 0 15px #ffd44788;
+}
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666d91;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:600px) {
+
+    .game {
+        padding: 20px;
+    }
+
+    .connect {
+        grid-template-columns: repeat(7, 38px);
+        gap: 5px;
+    }
+
+    .connect-cell {
+        width: 38px;
+        height: 38px;
+    }
+
+    .memory {
+        gap: 7px;
+    }
+
+    .card {
+        border-radius: 12px;
+        font-size: 25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-shape shape1"></div>
+<div class="bg-shape shape2"></div>
+
+<header>
+    <div class="logo">🎮 MINI ARCADE</div>
+    <div class="subtitle">
+        Kumpulan mini-game seru dalam satu halaman
+    </div>
+</header>
+
+<div class="nav">
+
+    <button class="active" onclick="showGame('ttt',this)">
+        ❌ Tic Tac Toe
+    </button>
+
+    <button onclick="showGame('rps',this)">
+        ✊ RPS
+    </button>
+
+    <button onclick="showGame('guess',this)">
+        🔢 Tebak Angka
+    </button>
+
+    <button onclick="showGame('memory',this)">
+        🧠 Memory
+    </button>
+
+    <button onclick="showGame('clicker',this)">
+        ⚡ Clicker
+    </button>
+
+    <button onclick="showGame('reaction',this)">
+        🎯 Reaction
+    </button>
+
+    <button onclick="showGame('snake',this)">
+        🐍 Snake
+    </button>
+
+    <button onclick="showGame('connect',this)">
+        🔴 Connect 4
+    </button>
+
+</div>
+
+<div class="container">
+
+<!-- TIC TAC TOE -->
+
+<section id="ttt" class="game active">
+
+    <h2 class="game-title">❌ Tic Tac Toe</h2>
+
+    <p class="game-desc">
+        Dua pemain. Siapa yang berhasil mendapatkan 3 simbol berurutan?
+    </p>
+
+    <div class="status" id="tttStatus">
+        Giliran ❌
+    </div>
+
+    <div class="ttt-board" id="tttBoard"></div>
+
+    <center>
+        <button class="main-btn" onclick="resetTTT()">
+            🔄 Reset Game
+        </button>
+    </center>
+
+</section>
+
+
+<!-- RPS -->
+
+<section id="rps" class="game">
+
+    <h2 class="game-title">✊ Rock Paper Scissors</h2>
+
+    <p class="game-desc">
+        Pilih senjatamu dan lawan komputer.
+    </p>
+
+    <div class="rps">
+
+        <button onclick="playRPS('rock')">🪨</button>
+        <button onclick="playRPS('paper')">📄</button>
+        <button onclick="playRPS('scissors')">✂️</button>
+
+    </div>
+
+    <div class="rps-result" id="rpsResult">
+        Pilih salah satu!
+    </div>
+
+</section>
+
+
+<!-- GUESS -->
+
+<section id="guess" class="game">
+
+    <h2 class="game-title">🔢 Tebak Angka</h2>
+
+    <p class="game-desc">
+        Komputer memilih angka dari 1 sampai 100.
+    </p>
+
+    <div class="guess-box">
+
+        <input
+            id="guessInput"
+            class="input"
+            type="number"
+            min="1"
+            max="100"
+            placeholder="Masukkan angka..."
+        >
+
+        <button class="main-btn" onclick="guessNumber()">
+            Tebak!
+        </button>
+
+        <p id="guessResult" style="margin-top:20px;color:#b9c0df;">
+            Coba keberuntunganmu.
+        </p>
+
+        <br>
+
+        <button class="main-btn" onclick="newGuess()">
+            🔄 Angka Baru
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- MEMORY -->
+
+<section id="memory" class="game">
+
+    <h2 class="game-title">🧠 Memory Cards</h2>
+
+    <p class="game-desc">
+        Temukan semua pasangan kartu.
+    </p>
+
+    <div class="memory" id="memoryBoard"></div>
+
+    <br>
+
+    <center>
+        <button class="main-btn" onclick="createMemory()">
+            🔄 Shuffle
+        </button>
+    </center>
+
+</section>
+
+
+<!-- CLICKER -->
+
+<section id="clicker" class="game">
+
+    <h2 class="game-title">⚡ Clicker Challenge</h2>
+
+    <p class="game-desc">
+        Klik sebanyak mungkin dalam 10 detik!
+    </p>
+
+    <div class="clicker">
+
+        <div class="click-count" id="clickCount">
+            0
+        </div>
+
+        <button class="click-button" onclick="clickGame()">
+            CLICK!
+        </button>
+
+        <p id="clickTimer" style="margin-top:20px;">
+            Tekan tombol untuk mulai
+        </p>
+
+        <br>
+
+        <button class="main-btn" onclick="resetClicker()">
+            🔄 Reset
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- REACTION -->
+
+<section id="reaction" class="game">
+
+    <h2 class="game-title">🎯 Reaction Test</h2>
+
+    <p class="game-desc">
+        Tunggu sampai berubah hijau, lalu klik secepat mungkin.
+    </p>
+
+    <div
+        id="reactionArea"
+        class="reaction-area"
+        onclick="reactionClick()"
+    >
+        KLIK UNTUK MULAI
+    </div>
+
+    <center>
+        <p id="reactionResult">
+            -
+        </p>
+    </center>
+
+</section>
+
+
+<!-- SNAKE -->
+
+<section id="snake" class="game">
+
+    <h2 class="game-title">🐍 Snake</h2>
+
+    <p class="game-desc">
+        Gunakan tombol panah atau WASD untuk bergerak.
+    </p>
+
+    <div class="snake-wrapper">
+
+        <div class="score">
+            Score: <span id="snakeScore">0</span>
+        </div>
+
+        <canvas id="snakeCanvas" width="400" height="400"></canvas>
+
+        <br><br>
+
+        <button class="main-btn" onclick="startSnake()">
+            ▶ Start / Restart
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- CONNECT FOUR -->
+
+<section id="connect" class="game">
+
+    <h2 class="game-title">🔴 Connect Four</h2>
+
+    <p class="game-desc">
+        Dua pemain. Sambungkan 4 keping secara horizontal,
+        vertikal, atau diagonal.
+    </p>
+
+    <div class="status" id="connectStatus">
+        Giliran 🔴
+    </div>
+
+    <div class="connect" id="connectBoard"></div>
+
+    <br>
+
+    <center>
+        <button class="main-btn" onclick="createConnect()">
+            🔄 Reset
+        </button>
+    </center>
+
+</section>
+
+</div>
+
+<footer>
+    🎮 MINI ARCADE • Made with HTML, CSS & JavaScript
+</footer>
+
+
+<script>
+
+/* =========================
+   GAME NAVIGATION
+========================= */
+
+function showGame(id, button) {
+
+    document.querySelectorAll('.game')
+        .forEach(g => g.classList.remove('active'));
+
+    document.querySelectorAll('.nav button')
+        .forEach(b => b.classList.remove('active'));
+
+    document.getElementById(id)
+        .classList.add('active');
+
+    button.classList.add('active');
+}
+
+
+/* =========================
+   TIC TAC TOE
+========================= */
+
+let tttBoard = Array(9).fill('');
+let tttPlayer = '❌';
+let tttGameOver = false;
+
+const tttElement =
+    document.getElementById('tttBoard');
+
+function createTTT() {
+
+    tttElement.innerHTML = '';
+
+    tttBoard.forEach((value, index) => {
+
+        const cell =
+            document.createElement('button');
+
+        cell.className = 'ttt-cell';
+
+        cell.textContent = value;
+
+        cell.onclick = () => playTTT(index);
+
+        tttElement.appendChild(cell);
+
+    });
+}
+
+function playTTT(index) {
+
+    if (tttBoard[index] || tttGameOver)
+        return;
+
+    tttBoard[index] = tttPlayer;
+
+    createTTT();
+
+    if (checkTTT()) {
+        document.getElementById('tttStatus')
+            .textContent =
+            tttPlayer + ' MENANG! 🎉';
+
+        tttGameOver = true;
+        return;
+    }
+
+    if (!tttBoard.includes('')) {
+
+        document.getElementById('tttStatus')
+            .textContent =
+            'SERI! 🤝';
+
+        tttGameOver = true;
+        return;
+    }
+
+    tttPlayer =
+        tttPlayer === '❌'
+            ? '⭕'
+            : '❌';
+
+    document.getElementById('tttStatus')
+        .textContent =
+        'Giliran ' + tttPlayer;
+}
+
+function checkTTT() {
+
+    const wins = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6]
+    ];
+
+    return wins.some(combo =>
+        combo.every(i =>
+            tttBoard[i] === tttPlayer
+        )
+    );
+}
+
+function resetTTT() {
+
+    tttBoard = Array(9).fill('');
+    tttPlayer = '❌';
+    tttGameOver = false;
+
+    document.getElementById('tttStatus')
+        .textContent = 'Giliran ❌';
+
+    createTTT();
+}
+
+createTTT();
+
+
+/* =========================
+   ROCK PAPER SCISSORS
+========================= */
+
+function playRPS(player) {
+
+    const choices =
+        ['rock','paper','scissors'];
+
+    const computer =
+        choices[Math.floor(
+            Math.random() * 3
+        )];
+
+    let result;
+
+    if (player === computer) {
+
+        result = '🤝 Seri!';
+
+    } else if (
+
+        (player === 'rock' && computer === 'scissors') ||
+        (player === 'paper' && computer === 'rock') ||
+        (player === 'scissors' && computer === 'paper')
+
+    ) {
+
+        result = '🎉 Kamu Menang!';
+
+    } else {
+
+        result = '💀 Kamu Kalah!';
+
+    }
+
+    document.getElementById('rpsResult')
+        .innerHTML =
+        `Kamu: <b>${emojiRPS(player)}</b><br>
+         Komputer: <b>${emojiRPS(computer)}</b><br><br>
+         ${result}`;
+}
+
+function emojiRPS(x) {
+
+    return {
+        rock:'🪨',
+        paper:'📄',
+        scissors:'✂️'
+    }[x];
+
+}
+
+
+/* =========================
+   GUESS NUMBER
+========================= */
+
+let secretNumber =
+    Math.floor(Math.random() * 100) + 1;
+
+let guessAttempts = 0;
+
+function guessNumber() {
+
+    const input =
+        document.getElementById('guessInput');
+
+    const number =
+        Number(input.value);
+
+    if (number < 1 || number > 100) {
+
+        document.getElementById('guessResult')
+            .textContent =
+            'Masukkan angka 1 - 100!';
+
+        return;
+    }
+
+    guessAttempts++;
+
+    if (number === secretNumber) {
+
+        document.getElementById('guessResult')
+            .textContent =
+            `🎉 BENAR! Kamu membutuhkan ${guessAttempts} percobaan.`;
+
+    } else if (number < secretNumber) {
+
+        document.getElementById('guessResult')
+            .textContent =
+            '📈 Terlalu kecil!';
+
+    } else {
+
+        document.getElementById('guessResult')
+            .textContent =
+            '📉 Terlalu besar!';
+
+    }
+}
+
+function newGuess() {
+
+    secretNumber =
+        Math.floor(Math.random() * 100) + 1;
+
+    guessAttempts = 0;
+
+    document.getElementById('guessInput').value = '';
+
+    document.getElementById('guessResult')
+        .textContent =
+        'Angka baru telah dibuat!';
+
+}
+
+
+/* =========================
+   MEMORY
+========================= */
+
+let memoryValues = [
+    '🍎','🍎',
+    '🍌','🍌',
+    '🍇','🍇',
+    '🍉','🍉',
+    '🍒','🍒',
+    '🥝','🥝',
+    '🍋','🍋',
+    '🥥','🥥'
+];
+
+let firstCard = null;
+let secondCard = null;
+let memoryLock = false;
+let memoryMatches = 0;
+
+function createMemory() {
+
+    const board =
+        document.getElementById('memoryBoard');
+
+    board.innerHTML = '';
+
+    memoryValues =
+        [...memoryValues]
+        .sort(() => Math.random() - .5);
+
+    firstCard = null;
+    secondCard = null;
+    memoryLock = false;
+    memoryMatches = 0;
+
+    memoryValues.forEach(value => {
+
+        const card =
+            document.createElement('div');
+
+        card.className = 'card';
+
+        card.innerHTML =
+            `<span>${value}</span>`;
+
+        card.onclick = () =>
+            flipCard(card, value);
+
+        board.appendChild(card);
+
+    });
+}
+
+function flipCard(card, value) {
+
+    if (
+        memoryLock ||
+        card.classList.contains('flipped') ||
+        card.classList.contains('matched')
+    )
+        return;
+
+    card.classList.add('flipped');
+
+    if (!firstCard) {
+
+        firstCard = {
+            element: card,
+            value: value
+        };
+
+        return;
+    }
+
+    secondCard = {
+        element: card,
+        value: value
+    };
+
+    memoryLock = true;
+
+    if (firstCard.value === secondCard.value) {
+
+        firstCard.element.classList.add('matched');
+        secondCard.element.classList.add('matched');
+
+        memoryMatches++;
+
+        firstCard = null;
+        secondCard = null;
+        memoryLock = false;
+
+        if (memoryMatches === 8)
+            setTimeout(() =>
+                alert('🎉 Semua kartu ditemukan!'),
+                300
+            );
+
+    } else {
+
+        setTimeout(() => {
+
+            firstCard.element
+                .classList.remove('flipped');
+
+            secondCard.element
+                .classList.remove('flipped');
+
+            firstCard = null;
+            secondCard = null;
+
+            memoryLock = false;
+
+        }, 700);
+    }
+}
+
+createMemory();
+
+
+/* =========================
+   CLICKER
+========================= */
+
+let clicks = 0;
+let clickStarted = false;
+let clickTime = 10;
+let clickInterval;
+
+function clickGame() {
+
+    if (!clickStarted) {
+
+        clickStarted = true;
+        clickTime = 10;
+        clicks = 0;
+
+        document.getElementById('clickCount')
+            .textContent = 0;
+
+        clickInterval =
+            setInterval(() => {
+
+                clickTime--;
+
+                document.getElementById('clickTimer')
+                    .textContent =
+                    `⏱️ ${clickTime} detik`;
+
+                if (clickTime <= 0) {
+
+                    clearInterval(clickInterval);
+
+                    clickStarted = false;
+
+                    document.getElementById('clickTimer')
+                        .textContent =
+                        `🏆 Selesai! Score: ${clicks}`;
+
+                }
+
+            }, 1000);
+    }
+
+    if (clickStarted) {
+
+        clicks++;
+
+        document.getElementById('clickCount')
+            .textContent = clicks;
+    }
+}
+
+function resetClicker() {
+
+    clearInterval(clickInterval);
+
+    clicks = 0;
+    clickStarted = false;
+    clickTime = 10;
+
+    document.getElementById('clickCount')
+        .textContent = 0;
+
+    document.getElementById('clickTimer')
+        .textContent =
+        'Tekan tombol untuk mulai';
+}
+
+
+/* =========================
+   REACTION
+========================= */
+
+let reactionState = 'idle';
+let reactionStart;
+let reactionTimeout;
+
+function reactionClick() {
+
+    const area =
+        document.getElementById('reactionArea');
+
+    if (reactionState === 'idle') {
+
+        reactionState = 'waiting';
+
+        area.className =
+            'reaction-area waiting';
+
+        area.textContent =
+            '⏳ TUNGGU...';
+
+        reactionTimeout =
+            setTimeout(() => {
+
+                reactionState = 'ready';
+
+                reactionStart =
+                    performance.now();
+
+                area.className =
+                    'reaction-area ready';
+
+                area.textContent =
+                    '⚡ KLIK SEKARANG!';
+
+            }, 1500 + Math.random() * 3000);
+
+    } else if (reactionState === 'waiting') {
+
+        clearTimeout(reactionTimeout);
+
+        reactionState = 'idle';
+
+        area.className =
+            'reaction-area';
+
+        area.textContent =
+            'Terlalu cepat! 😭';
+
+    } else if (reactionState === 'ready') {
+
+        const time =
+            Math.round(
+                performance.now() - reactionStart
+            );
+
+        document.getElementById('reactionResult')
+            .textContent =
+            `⚡ Reaction time: ${time} ms`;
+
+        reactionState = 'idle';
+
+        area.className =
+            'reaction-area';
+
+        area.textContent =
+            'KLIK UNTUK COBA LAGI';
+    }
+}
+
+
+/* =========================
+   SNAKE
+========================= */
+
+const canvas =
+    document.getElementById('snakeCanvas');
+
+const ctx =
+    canvas.getContext('2d');
+
+const grid = 20;
+
+let snake;
+let food;
+let dx;
+let dy;
+let snakeRunning = false;
+let snakeScore = 0;
+
+function startSnake() {
+
+    snake = [
+        {x:200,y:200},
+        {x:180,y:200},
+        {x:160,y:200}
+    ];
+
+    dx = grid;
+    dy = 0;
+
+    snakeScore = 0;
+
+    document.getElementById('snakeScore')
+        .textContent = snakeScore;
+
+    spawnFood();
+
+    snakeRunning = true;
+
+    clearInterval(window.snakeLoop);
+
+    window.snakeLoop =
+        setInterval(updateSnake, 100);
+}
+
+function spawnFood() {
+
+    food = {
+
+        x:
+            Math.floor(
+                Math.random() * (canvas.width / grid)
+            ) * grid,
+
+        y:
+            Math.floor(
+                Math.random() * (canvas.height / grid)
+            ) * grid
+    };
+}
+
+function updateSnake() {
+
+    if (!snakeRunning)
+        return;
+
+    const head = {
+        x: snake[0].x + dx,
+        y: snake[0].y + dy
+    };
+
+    if (
+        head.x < 0 ||
+        head.y < 0 ||
+        head.x >= canvas.width ||
+        head.y >= canvas.height ||
+        snake.some(
+            part =>
+            part.x === head.x &&
+            part.y === head.y
+        )
+    ) {
+
+        snakeRunning = false;
+
+        alert(
+            `💀 Game Over!\nScore: ${snakeScore}`
+        );
+
+        return;
+    }
+
+    snake.unshift(head);
+
+    if (
+        head.x === food.x &&
+        head.y === food.y
+    ) {
+
+        snakeScore++;
+
+        document.getElementById('snakeScore')
+            .textContent = snakeScore;
+
+        spawnFood();
+
+    } else {
+
+        snake.pop();
+
+    }
+
+    drawSnake();
+}
+
+function drawSnake() {
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    ctx.fillStyle = '#ff4fa3';
+
+    ctx.fillRect(
+        food.x,
+        food.y,
+        grid - 2,
+        grid - 2
+    );
+
+    ctx.fillStyle = '#7d4dff';
+
+    snake.forEach(part => {
+
+        ctx.fillRect(
+            part.x,
+            part.y,
+            grid - 2,
+            grid - 2
+        );
+
+    });
+}
+
+document.addEventListener('keydown', e => {
+
+    if (
+        ['ArrowUp','w','W'].includes(e.key) &&
+        dy === 0
+    ) {
+
+        dx = 0;
+        dy = -grid;
+
+    } else if (
+        ['ArrowDown','s','S'].includes(e.key) &&
+        dy === 0
+    ) {
+
+        dx = 0;
+        dy = grid;
+
+    } else if (
+        ['ArrowLeft','a','A'].includes(e.key) &&
+        dx === 0
+    ) {
+
+        dx = -grid;
+        dy = 0;
+
+    } else if (
+        ['ArrowRight','d','D'].includes(e.key) &&
+        dx === 0
+    ) {
+
+        dx = grid;
+        dy = 0;
+
+    }
+
+});
+
+
+/* =========================
+   CONNECT FOUR
+========================= */
+
+const ROWS = 6;
+const COLS = 7;
+
+let connectBoard;
+let connectPlayer = 'red';
+let connectGameOver = false;
+
+function createConnect() {
+
+    connectBoard =
+        Array.from(
+            {length: ROWS},
+            () => Array(COLS).fill('')
+        );
+
+    connectPlayer = 'red';
+    connectGameOver = false;
+
+    drawConnect();
+
+    document.getElementById('connectStatus')
+        .textContent =
+        'Giliran 🔴';
+}
+
+function drawConnect() {
+
+    const board =
+        document.getElementById('connectBoard');
+
+    board.innerHTML = '';
+
+    for (let r = 0; r < ROWS; r++) {
+
+        for (let c = 0; c < COLS; c++) {
+
+            const cell =
+                document.createElement('div');
+
+            cell.className =
+                'connect-cell ' +
+                connectBoard[r][c];
+
+            cell.onclick =
+                () => dropConnect(c);
+
+            board.appendChild(cell);
+        }
+    }
+}
+
+function dropConnect(col) {
+
+    if (connectGameOver)
+        return;
+
+    for (let r = ROWS - 1; r >= 0; r--) {
+
+        if (!connectBoard[r][col]) {
+
+            connectBoard[r][col] =
+                connectPlayer;
+
+            if (checkConnect(r,col)) {
+
+                drawConnect();
+
+                document.getElementById('connectStatus')
+                    .textContent =
+                    `🏆 ${connectPlayer === 'red'
+                        ? '🔴'
+                        : '🟡'} MENANG!`;
+
+                connectGameOver = true;
+
+                return;
+            }
+
+            connectPlayer =
+                connectPlayer === 'red'
+                    ? 'yellow'
+                    : 'red';
+
+            document.getElementById('connectStatus')
+                .textContent =
+                connectPlayer === 'red'
+                    ? 'Giliran 🔴'
+                    : 'Giliran 🟡';
+
+            drawConnect();
+
+            return;
+        }
+    }
+}
+
+function checkConnect(row,col) {
+
+    const player =
+        connectBoard[row][col];
+
+    const directions = [
+        [1,0],
+        [0,1],
+        [1,1],
+        [1,-1]
+    ];
+
+    for (const [dr,dc] of directions) {
+
+        let count = 1;
+
+        for (
+            let direction of [-1,1]
+        ) {
+
+            let r = row + dr * direction;
+            let c = col + dc * direction;
+
+            while (
+                r >= 0 &&
+                r < ROWS &&
+                c >= 0 &&
+                c < COLS &&
+                connectBoard[r][c] === player
+            ) {
+
+                count++;
+
+                r += dr * direction;
+                c += dc * direction;
+            }
+        }
+
+        if (count >= 4)
+            return true;
+    }
+
+    return false;
+}
+
+createConnect();
+
+</script>
+
+</body>
+</html>
+```
